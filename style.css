@@ -1,0 +1,14 @@
+body {
+  text-align: center;
+  background: #111;
+  color: #fff;
+  font-family: sans-serif;
+}
+
+video, canvas {
+  width: 720px;
+  height: 540px;
+  margin: 10px auto;
+  border: 2px solid #444;
+  display: block;
+}
