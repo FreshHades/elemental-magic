@@ -6,6 +6,7 @@ let cap, src, dst, bg;
 let isBgCaptured = false;
 
 function onOpenCvReady() {
+  console.log("OpenCV.js loaded and ready");
   navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
     video.srcObject = stream;
     video.play();
