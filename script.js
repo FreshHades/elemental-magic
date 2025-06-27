@@ -1,5 +1,5 @@
-function onOpenCvReady() {
-  console.log("✅ OpenCV.js loaded");
+window.onOpenCvReady = function () {
+  console.log("OpenCV.js loaded");
 
   navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
     video.srcObject = stream;
@@ -14,10 +14,10 @@ function onOpenCvReady() {
       dst = new cv.Mat(video.videoHeight, video.videoWidth, cv.CV_8UC4);
       bg = new cv.Mat(video.videoHeight, video.videoWidth, cv.CV_8UC4);
 
-      // 👇 Slight delay to let video settle
+      //  Slight delay to let video settle
       setTimeout(() => {
         cap.read(bg);
-        console.log("✅ Background captured.");
+        console.log(" Background captured.");
         isBgCaptured = true;
         processVideo();
       }, 1000); // reduce to 1 second for testing
