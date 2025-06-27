@@ -68,7 +68,7 @@ function processVideo() {
     cv.addWeighted(bgPart, 1, fgPart, 1, 0, dst);
 
     // Display result on canvas
-    cv.imshow("output", dst);
+    cv.imshow("output", mask); // shows the cloak area as white
 
     // Loop at the desired FPS
     setTimeout(loop, 1000 / FPS);
