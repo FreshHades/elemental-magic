@@ -19,7 +19,7 @@ function onOpenCvReady() {
       dst = new cv.Mat(video.videoHeight, video.videoWidth, cv.CV_8UC4);
       bg = new cv.Mat(video.videoHeight, video.videoWidth, cv.CV_8UC4);
 
-      // Wait a few seconds then capture background
+      // Capture the background after 3 seconds
       setTimeout(() => {
         cap.read(bg);
         isBgCaptured = true;
@@ -44,25 +44,36 @@ function processVideo() {
     if (!isBgCaptured) return;
 
     cap.read(src);
+
+    // Convert to HSV color space
     cv.cvtColor(src, hsv, cv.COLOR_RGBA2RGB);
     cv.cvtColor(hsv, hsv, cv.COLOR_RGB2HSV);
 
-    // Pink range
+    // Define pink range in HSV
     let low = new cv.Mat(hsv.rows, hsv.cols, hsv.type(), [140, 50, 50, 0]);
     let high = new cv.Mat(hsv.rows, hsv.cols, hsv.type(), [170, 255, 255, 255]);
     cv.inRange(hsv, low, high, mask);
 
-    // Inverse mask for foreground
+    // Invert mask to get everything except your cloak
     cv.bitwise_not(mask, maskInv);
 
+    // Extract background part where cloak is
     cv.bitwise_and(bg, bg, bgPart, mask);
+
+    // Extract current frame part without cloak
     cv.bitwise_and(src, src, fgPart, maskInv);
+
+    // Merge both parts
     cv.addWeighted(bgPart, 1, fgPart, 1, 0, dst);
 
+    // Display result on canvas
     cv.imshow("output", dst);
+
+    // Loop at the desired FPS
     setTimeout(loop, 1000 / FPS);
 
-    low.delete(); high.delete();
+    low.delete();
+    high.delete();
   }
 
   loop();
